@@ -1,0 +1,83 @@
+﻿@using RunGroupWebApp.Data.Enum;
+@using RunGroupWebApp.ViewModel;
+
+@model EditClubViewModel
+
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Edit</h1>
+
+<h4>Club</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" asp-action="Edit" enctype="multipart/form-data">
+            <input type="hidden" value="AdressId" id="AdressId" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Title" class="control-label"></label>
+                <input asp-for="Title" class="form-control" placeholder="Title" />
+                <span asp-validation-for="Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" placeholder="Description" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            @*<div class="form-group">
+            <label asp-for="Image" class="control-label"></label>
+            <input asp-for="Image" class="form-control" placeholder="Image"/>
+            <span asp-validation-for="Image" class="text-danger"></span>
+            </div>*@
+            <div class="form-group">
+                <label asp-for="ClubCategory" class="control-label">ClubCategory</label>
+                <select asp-for="ClubCategory" asp-items="@Html.GetEnumSelectList<ClubCategory>()"
+                        class="form-control">
+                    <option>--select--</option>
+                </select>
+                <span asp-validation-for="ClubCategory" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.street" class="control-label"></label>
+                <input asp-for="Address.street" class="form-control" placeholder="Street" />
+                <span asp-validation-for="Address.street" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.city" class="control-label"></label>
+                <input asp-for="Address.city" class="form-control" placeholder="City" />
+                <span asp-validation-for="Address.city" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address.state" class="control-label"></label>
+                <input asp-for="Address.state" class="form-control" placeholder="City" />
+                <span asp-validation-for="Address.state" class="text-danger"></span>
+            </div>
+
+
+            <div class="form-group">
+                <label asp-for="Image" class="control-label">Image</label>
+                <input asp-for="Image" type="file" class="form-control" placeholder="Image" />
+                <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <br />
+
+            <div class="form-group">
+                <input type="submit" value="Edit" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+<br/>
+<div>
+    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

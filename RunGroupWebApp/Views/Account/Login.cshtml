@@ -1,0 +1,126 @@
+﻿@using RunGroupWebApp.ViewModel
+@model Loginviewmodel
+
+
+@*<a href="~/lib/jquery/dist/jquery.min.map">~/lib/jquery/dist/jquery.min.map</a>*@
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script src="~/js/site.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
+<h1>Login Page</h1>
+
+<div class="row">
+    <div class="col-md-4">
+        <p>
+            <h4>Log in in to your account</h4>
+        </p>
+        @if (TempData["Error"] != null)
+        {
+            <div class="col-md-12 alert alert-danger">
+                <span><b>Sorry! </b>- @TempData["Error"]</span>
+            </div>
+        }
+        @*<form method="post" id="myform" asp-action="Login" enctype="multipart/form-data">*@
+        <form id="myform">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="EmailAddress" class="control-label"></label>
+                <input asp-for="EmailAddress" id="user1" class="form-control" placeholder="Title" />
+                <span asp-validation-for="EmailAddress" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" id="pass1" class="form-control" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+                <input type="checkbox" onclick="myf()" id="check" name="ch" />
+                <label for="ch">Show Password</label>
+            </div>
+
+            <br />
+            <div class="row  d-inline ">
+                <input type="number" name="captcha" id="capt1" readonly="readonly" class="col-sm-2 " />
+                <p class="d-inline col-sm-1"><b>+</b></p>
+                <input name="captcha" id="capt2" readonly="readonly" class="col-sm-2" />
+
+                <p class="d-inline col-sm-1"><b>=</b></p>
+
+                <input name="captcha" id="captf" class="col-sm-2" />
+            </div>
+            <br />
+
+
+            <div class="form-group">
+                @*<input type="submit" onclick="myfu()" value="Login" class="btn btn-primary" />*@
+                <button type="submit" onclick="myfu()" value="Login" class="btn btn-primary">Login</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<script>
+    function myf() {
+        if (document.getElementById('pass1').type === "password") {
+            document.getElementById('pass1').type = "text"
+        }
+        else {
+            document.getElementById('pass1').type = "password"
+        }
+    }
+</script>
+
+<script>
+    var c1;
+    var c2;
+    $(document).ready(function () {
+        c1 = Math.floor(Math.random() * 10);
+        c2 = Math.floor(Math.random() * 10);
+        $("#capt1").val(c1);
+        $("#capt2").val(c2);
+    })
+    function myfu() {
+        var c3 = $("#captf").val();
+        var c4 = $("#user1").val();
+        var c5 = $("#pass1").val();
+
+        if (c3 == c1 + c2) {
+            $("#myform").submit(function (e) {
+                e.preventDefault();
+                var formdata = {
+                    EmailAddress: c4,
+                    Password: c5
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Login","Account")',
+                    data: formdata,
+                    datatype: 'json',
+                    success: function (result) {
+                        swal("Good job!", "Login Successfully", "success");
+                        setTimeout(function () {
+                            window.location.href = '/Race/Index';
+                        }, 3000);
+                    },
+                    error: function (xhr, status, error) {
+                        //var errom = "@TempData["ErrorMessage"]";
+    
+                            //alert(errom);
+                            swal("Error!", "Wrong Credentials entered", "error");
+
+                    },
+                });
+            });
+        }
+        else {
+
+            swal("Error occured!", "Captcha is wrong", "error");
+
+        }
+    }
+</script>
+
